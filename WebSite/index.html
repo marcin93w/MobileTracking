@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+	<title>Mobile Tracking</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/style.css">
+	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+	<script type="text/javascript" src="js/mobiletracking.js"></script>
+</head>
+<body>
+
+<div class="container">
+    <div class="jumbotron">
+        <h1>Mobile Tracking</h1>
+        <p>Web portal</p> 
+    </div>
+    <div id="map-canvas"></div>
+    <div id="settings">
+        <h2>Ustawienia:</h2>
+        <label for="sel1">Wybierz użytkownika:</label>
+        <select class="form-control" id="users">
+        </select>
+        <button id="load" type="button" class="btn">Załaduj</button>
+    </div>
+</div>
+</body>
+</html>

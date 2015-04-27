@@ -13,7 +13,7 @@ namespace WebApplication1.Controllers
     public class LocationController : ApiController
     {
         [HttpPost]
-        public IHttpActionResult UpdateLocation([FromBody]LocationViewModel l)
+        public IHttpActionResult UpdateLocation([FromBody]LocationDTO l)
         {
             using(var locationsEntity = new LocationEntities())
             {
@@ -26,7 +26,7 @@ namespace WebApplication1.Controllers
                 locationsEntity.Locations.Add(new Location()
                     {
                         Route = route,
-                        Point = GeoUtils.CreatePoint(l.Lat, l.Lon, DbGeography.DefaultCoordinateSystemId),
+                        Point = GeoUtils.CreatePoint(l.Lat, l.Lon, DbGeometry.DefaultCoordinateSystemId),
                         Datetime = DateTime.Now
                     });
 

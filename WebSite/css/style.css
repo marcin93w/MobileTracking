@@ -1,0 +1,21 @@
+#map-canvas
+{
+	width: 800px;
+	height: 500px;
+	float: right;
+}
+
+#settings
+{
+    width: 300px;
+}
+
+h2
+{
+    margin-bottom: 20px;
+}
+
+button
+{
+    margin-top: 25px;
+}

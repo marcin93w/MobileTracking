@@ -16,8 +16,8 @@ namespace WebApplication1
     {
         public int Id { get; set; }
         public Nullable<int> RouteId { get; set; }
-        public Nullable<System.DateTime> Datetime { get; set; }
-        public System.Data.Spatial.DbGeography Point { get; set; }
+        public System.DateTime Datetime { get; set; }
+        public System.Data.Spatial.DbGeometry Point { get; set; }
     
         public virtual Route Route { get; set; }
     }

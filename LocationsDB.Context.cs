@@ -25,8 +25,8 @@ namespace WebApplication1
             throw new UnintentionalCodeFirstException();
         }
     
-        public DbSet<Location> Locations { get; set; }
         public DbSet<Route> Routes { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Location> Locations { get; set; }
     }
 }

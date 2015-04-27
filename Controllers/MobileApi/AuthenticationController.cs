@@ -27,7 +27,7 @@ namespace WebApplication1.Controllers
                         u => u.Username == username && u.Password == encryptedPassword);
 
                     if (user != null)
-                        return Ok(new UserViewModel() { Id = user.Id, Name = user.Username });
+                        return Ok(new UserDTO() { Id = user.Id, Name = user.Username });
                 }
             }
 

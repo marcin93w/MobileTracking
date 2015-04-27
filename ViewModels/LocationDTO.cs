@@ -5,9 +5,10 @@ using System.Web;
 
 namespace WebApplication1.Models
 {
-    public class LocationViewModel
+    public class LocationDTO
     {
         public int UserId { set; get; }
+        public DateTime Time { set; get; }
         public double Lon { set; get; }
         public double Lat { set; get; }
     }

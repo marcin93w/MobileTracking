@@ -22,7 +22,7 @@ namespace WebApplication1
         public int Id { get; set; }
         public Nullable<int> UserId { get; set; }
     
-        public virtual ICollection<Location> Locations { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<Location> Locations { get; set; }
     }
 }

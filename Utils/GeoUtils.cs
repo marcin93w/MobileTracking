@@ -9,11 +9,11 @@ namespace WebApplication1.Utils
 {
     public class GeoUtils
     {
-        public static DbGeography CreatePoint(double lat, double lon, int srid)
+        public static DbGeometry CreatePoint(double lat, double lon, int srid)
         {
             string wkt = String.Format(CultureInfo.InvariantCulture, "POINT({0} {1})", lon, lat);
 
-            return DbGeography.PointFromText(wkt, srid);
+            return DbGeometry.PointFromText(wkt, srid);
         }
     }
 }
