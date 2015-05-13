@@ -13,17 +13,19 @@ namespace WebApplication1.Controllers
     public class LocationDataController : ApiController
     {
         [HttpGet]
-        public UserLocationsDTO GetLocations(int userId)
+        public UserLocationsDTO GetLocations([FromUri] LocationsSettings settings)
         {
             using (var locationsEntity = new LocationEntities())
             {
                 var locations = 
                        from location in locationsEntity.Locations
-                       where location.Route.UserId == userId
+                       where location.Route.UserId == settings.UserId
+                        && (settings.Start == null || location.Datetime >= settings.Start)
+                        && (settings.End == null || location.Datetime <= settings.End)
                        orderby location.Datetime
                        select new LocationDTO()
                        {
-                           UserId = userId,
+                           UserId = settings.UserId,
                            Time = location.Datetime,
                            Lon = location.Point.XCoordinate.Value,
                            Lat = location.Point.YCoordinate.Value
@@ -31,7 +33,7 @@ namespace WebApplication1.Controllers
 
                 return new UserLocationsDTO()
                 {
-                    UserId = userId,
+                    UserId = settings.UserId,
                     Locations = locations.ToList()
                 };
             }

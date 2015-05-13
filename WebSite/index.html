@@ -5,11 +5,23 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/jquery.datetimepicker.css">
 	<link rel="stylesheet" href="css/style.css">
 	<script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
-	<script type="text/javascript" src="js/mobiletracking.js"></script>
+    <script type="text/javascript" src="js/mobiletracking.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#start-date').datetimepicker({
+                defaultDate: new Date()
+            });
+            $('#end-date').datetimepicker({
+                defaultDate: new Date()
+            });
+        });
+    </script>
 </head>
 <body>
 
@@ -18,14 +30,25 @@
         <h1>Mobile Tracking</h1>
         <p>Web portal</p> 
     </div>
-    <div id="map-canvas"></div>
     <div id="settings">
         <h2>Ustawienia:</h2>
-        <label for="sel1">Wybierz użytkownika:</label>
+        <label for="users">Wybierz użytkownika:</label>
         <select class="form-control" id="users">
         </select>
+        <label for="start-date">Czas od:</label>
+        <input type="text" class="form-control" id="start-date"/>
+        <label for="end-date">Czas do:</label>
+        <input type="text" class="form-control" id="end-date" />
         <button id="load" type="button" class="btn">Załaduj</button>
     </div>
+    <div id="stats">
+        <h2>Statystyki:</h2>
+        <p>Liczba zaraportowanych punktów: <span id="points-count">0</span></p>
+        <p>Maksymalna prędkość: <span id="max-speed">0</span> km/h</p>
+        <p>Czas rozpoczęcia trasy: <span id="start-time">-</span></p>
+        <p>Czas zakończenia trasy: <span id="end-time">-</span></p>
+    </div>
+    <div id="map-canvas"></div>
 </div>
 </body>
 </html>

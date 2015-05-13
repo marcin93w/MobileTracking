@@ -16,7 +16,7 @@ namespace WebApplication1.Controllers.DataAccesssApi
             using (var locationsEntity = new LocationEntities())
             {
                 return (from user in locationsEntity.Users
-                       select new UserDTO()
+                       select new UserDTO
                        {
                            Id = user.Id,
                            Name = user.Username
