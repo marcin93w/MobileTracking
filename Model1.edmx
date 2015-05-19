@@ -4,28 +4,29 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="postgresModel.Store" Provider="Devart.Data.PostgreSql" ProviderManifestToken="PostgreSQL, 9.3.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="postgresModel.Store" Provider="Npgsql" ProviderManifestToken="9.3.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6005: The data type 'geometry' is currently not supported for the target Entity Framework version; the column 'Point' in the table 'postgres.public.Locations' was excluded.-->
         <EntityType Name="Locations">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RouteId" Type="int" />
+          <Property Name="Id" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RouteId" Type="int4" />
           <Property Name="Datetime" Type="timestamp" Nullable="false" />
-          <Property Name="Point" Type="spatial_geometry" Nullable="false" />
         </EntityType>
         <EntityType Name="Routes">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserId" Type="int" />
+          <Property Name="Id" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int4" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Id" Type="int4" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Username" Type="text" />
           <Property Name="Password" Type="text" />
         </EntityType>
@@ -66,31 +67,28 @@
             <End Role="Routes" EntitySet="Routes" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="postgresModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityContainer Name="LocationEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Routes" EntityType="postgresModel.Route" />
-          <EntitySet Name="Users" EntityType="postgresModel.User" />
-          <AssociationSet Name="Routes_UserId_fkey" Association="postgresModel.Routes_UserId_fkey">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Route" EntitySet="Routes" />
-          </AssociationSet>
-          <EntitySet Name="Locations" EntityType="postgresModel.Location" />
-          <AssociationSet Name="Locations_RouteId_fkey" Association="postgresModel.Locations_RouteId_fkey">
-            <End Role="Route" EntitySet="Routes" />
-            <End Role="Location" EntitySet="Locations" />
-          </AssociationSet>
-        </EntityContainer>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RouteId" Type="Int32" />
+          <Property Name="Datetime" Type="DateTime" Precision="6" Nullable="false" />
+          <NavigationProperty Name="Route" Relationship="Self.Locations_RouteId_fkey" FromRole="Locations" ToRole="Routes" />
+        </EntityType>
         <EntityType Name="Route">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" />
-          <NavigationProperty Name="User" Relationship="postgresModel.Routes_UserId_fkey" FromRole="Route" ToRole="User" />
-          <NavigationProperty Name="Locations" Relationship="postgresModel.Locations_RouteId_fkey" FromRole="Route" ToRole="Location" />
+          <NavigationProperty Name="Locations" Relationship="Self.Locations_RouteId_fkey" FromRole="Routes" ToRole="Locations" />
+          <NavigationProperty Name="User" Relationship="Self.Routes_UserId_fkey" FromRole="Routes" ToRole="Users" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -99,72 +97,74 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Username" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Routes" Relationship="postgresModel.Routes_UserId_fkey" FromRole="User" ToRole="Route" />
-        </EntityType>
-        <Association Name="Routes_UserId_fkey">
-          <End Type="postgresModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="postgresModel.Route" Role="Route" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Route">
-              <PropertyRef Name="UserId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="Location">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RouteId" Type="Int32" />
-          <Property Name="Datetime" Type="DateTime" Nullable="false" />
-          <Property Name="Point" Type="Geometry" Nullable="false" />
-          <NavigationProperty Name="Route" Relationship="postgresModel.Locations_RouteId_fkey" FromRole="Location" ToRole="Route" />
+          <NavigationProperty Name="Routes" Relationship="Self.Routes_UserId_fkey" FromRole="Users" ToRole="Routes" />
         </EntityType>
         <Association Name="Locations_RouteId_fkey">
-          <End Type="postgresModel.Route" Role="Route" Multiplicity="0..1" />
-          <End Type="postgresModel.Location" Role="Location" Multiplicity="*" />
+          <End Role="Routes" Type="Self.Route" Multiplicity="0..1" />
+          <End Role="Locations" Type="Self.Location" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Route">
+            <Principal Role="Routes">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Location">
+            <Dependent Role="Locations">
               <PropertyRef Name="RouteId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="Routes_UserId_fkey">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Routes" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Routes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="postgresEntities1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Routes" EntityType="Self.Route" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="Locations_RouteId_fkey" Association="Self.Locations_RouteId_fkey">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Locations" EntitySet="Locations" />
+          </AssociationSet>
+          <AssociationSet Name="Routes_UserId_fkey" Association="Self.Routes_UserId_fkey">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Routes" EntitySet="Routes" />
+          </AssociationSet>
+        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="postgresModelStoreContainer" CdmEntityContainer="LocationEntities">
+        <EntityContainerMapping StorageEntityContainer="postgresModelStoreContainer" CdmEntityContainer="postgresEntities1">
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="postgresModel.Location">
+              <MappingFragment StoreEntitySet="Locations">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Datetime" ColumnName="Datetime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Routes">
             <EntityTypeMapping TypeName="postgresModel.Route">
               <MappingFragment StoreEntitySet="Routes">
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="postgresModel.User">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Locations">
-            <EntityTypeMapping TypeName="postgresModel.Location">
-              <MappingFragment StoreEntitySet="Locations">
-                <ScalarProperty Name="Point" ColumnName="Point" />
-                <ScalarProperty Name="Datetime" ColumnName="Datetime" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -182,9 +182,9 @@
     <Options>
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
-        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
         <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
-        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>
     </Options>

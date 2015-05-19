@@ -21,8 +21,8 @@ namespace WebApplication1.Controllers
             {
                 string username = post.username;
                 string encryptedPassword = CalculateSHA1((string)post.password, Encoding.UTF8);
-                
-                using (var locationsDb = new LocationEntities())
+
+                using (var locationsDb = new postgresEntities1())
                 {
                     locationsDb.Database.Connection.Open();
                     var user = locationsDb.Users.FirstOrDefault(
@@ -46,7 +46,7 @@ namespace WebApplication1.Controllers
 
                 try
                 {
-                    using (var locationsDb = new LocationEntities())
+                    using (var locationsDb = new postgresEntities1())
                     {
                         locationsDb.Database.Connection.Open();
                         var user = locationsDb.Users.FirstOrDefault(u => u.Username == username);
@@ -59,7 +59,7 @@ namespace WebApplication1.Controllers
                         locationsDb.Users.Add(newUser);
                         locationsDb.SaveChanges();
 
-                        return Ok(new UserDTO{ Id = newUser.Id, Name = newUser.Username });
+                        return Ok(new UserDTO { Id = newUser.Id, Name = newUser.Username });
                     }
                 }
                 catch (Exception e)

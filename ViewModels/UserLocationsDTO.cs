@@ -43,15 +43,19 @@ namespace WebApplication1.ViewModels
 
         private void UpdateLocationsData()
         {
-            MaxSpeed = Locations.Zip(Locations.Skip(1), CalculateMaxSpeedBetweenLocations).Max();
+            if(Locations.Count > 1)
+                MaxSpeed = Locations.Zip(Locations.Skip(1), CalculateMaxSpeedBetweenLocations).Max();
         }
 
         private double CalculateMaxSpeedBetweenLocations(LocationDTO location1, LocationDTO location2)
         {
+            if ((location2.Time - location1.Time).TotalMilliseconds <= 0)
+                return 0;
+
             var coord1 = new GeoCoordinate(location1.Lat, location1.Lon);
             var coord2 = new GeoCoordinate(location2.Lat, location2.Lon);
 
-            var maxSpeed = (coord1.GetDistanceTo(coord2) / (location2.Time - location1.Time).Milliseconds) * 36000;
+            var maxSpeed = ((coord1.GetDistanceTo(coord2) / (location2.Time - location1.Time).TotalMilliseconds)) * 360;
             return Math.Round(maxSpeed, 2);
         }
     }

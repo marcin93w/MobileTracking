@@ -13,14 +13,14 @@ namespace WebApplication1.Controllers.DataAccesssApi
         [HttpGet]
         public IEnumerable<UserDTO> GetAll()
         {
-            using (var locationsEntity = new LocationEntities())
+            using (var locationsEntity = new postgresEntities1())
             {
                 return (from user in locationsEntity.Users
-                       select new UserDTO
-                       {
-                           Id = user.Id,
-                           Name = user.Username
-                       }).ToList();
+                        select new UserDTO
+                        {
+                            Id = user.Id,
+                            Name = user.Username
+                        }).ToList();
             }
         }
     }
