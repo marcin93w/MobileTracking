@@ -11,6 +11,7 @@
 	<script type="text/javascript" src="js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="js/jquery.datetimepicker.js"></script>
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="js/mobiletracking-random-colors-generator.js"></script>
     <script type="text/javascript" src="js/mobiletracking.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
@@ -33,20 +34,26 @@
     <div id="settings">
         <h2>Ustawienia:</h2>
         <label for="users">Wybierz użytkownika:</label>
-        <select class="form-control" id="users">
+        <select class="form-control multiselect" multiple="multiple" id="users">
         </select>
         <label for="start-date">Czas od:</label>
         <input type="text" class="form-control" id="start-date"/>
         <label for="end-date">Czas do:</label>
         <input type="text" class="form-control" id="end-date" />
+        <input type="checkbox" id="markers" value="true" />
+        <label for="markers">Pokaż znaczniki</label><br />
         <button id="load" type="button" class="btn">Załaduj</button>
     </div>
     <div id="stats">
         <h2>Statystyki:</h2>
         <p>Liczba zaraportowanych punktów: <span id="points-count">0</span></p>
-        <p>Maksymalna prędkość: <span id="max-speed">0</span> km/h</p>
-        <p>Czas rozpoczęcia trasy: <span id="start-time">-</span></p>
-        <p>Czas zakończenia trasy: <span id="end-time">-</span></p>
+        <p>Liczba tras: <span id="routes-count">0</span></p>
+        <p>Przebytych kilometrów: <span id="total-distance">0</span></p>
+        <p>Średnia prędkość: <span id="average-speed">0</span> km/h</p>
+    </div>
+    <div id="legend">
+        <h2>Legenda:</h2>
+        <div id="users-legend"></div>
     </div>
     <div id="map-canvas"></div>
 </div>

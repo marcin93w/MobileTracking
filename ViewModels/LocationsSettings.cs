@@ -8,7 +8,7 @@ namespace WebApplication1.ViewModels
 {
     public class LocationsSettings
     {
-        public int UserId { set; get; }
+        public List<int> UserIds { set; get; }
         public DateTime Start { set; get; }
         public DateTime End { set; get; }
     }

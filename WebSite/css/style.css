@@ -6,7 +6,7 @@
     margin: 40px 0;
 }
 
-#settings, #stats
+#settings, #stats, #legend
 {
     width: 300px;
     display: inline-block;
